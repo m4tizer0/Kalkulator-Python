@@ -63,9 +63,13 @@ class Kalkulator(QWidget):
         self.setLayout(ukladT)
 
         koniecBtn.clicked.connect(self.koniec)
+        dodajBtn.clicked.connect(self.dzialanie)
+        odejmijBtn.clicked.connect(self.dzialanie)
+        mnozBtn.clicked.connect(self.dzialanie)
+        dzielBtn.clicked.connect(self.dzialanie)
 
         self.setGeometry(20, 20, 300, 100)
-        self.setWindowIcon(QIcon('kalkulator.png'))
+        self.setWindowIcon(QIcon('zdjecie.png'))
         self.setWindowTitle("Prosty kalkulator")
         self.show()
 
@@ -86,7 +90,35 @@ class Kalkulator(QWidget):
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Escape:
-            self.close()    
+            self.close()   
+
+    def dzialanie(self):
+
+        nadawca = self.sender()
+
+        try:
+            liczba1 = float(self.liczba1Edt.text())
+            liczba2 = float(self.liczba2Edt.text())
+            wynik = ""   
+
+            if nadawca.text() == "&Dodaj":
+                wynik = liczba1 + liczba2
+            elif nadawca.text() == "&Odejmij":
+                wynik = liczba1 - liczba2
+            elif nadawca.text() == "&Mnóż":
+                wynik = liczba1 * liczba2
+            else: #dzielenie
+                try:
+                    wynik = round(liczba1 / liczba2, 9)
+                except ZeroDivisionError:
+                    QMessageBox.critical(
+                        self, "Błąd", "Nie można dzielić przez zero!")
+                    return
+
+            self.wynikEdt.setText(str(wynik))
+
+        except ValueError:
+          QMessageBox.warning(self, "Błąd", "Błędne dane", QMessageBox.Ok)     
 
 if __name__ == '__main__':
     import sys
