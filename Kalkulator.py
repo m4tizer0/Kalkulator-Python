@@ -62,11 +62,32 @@ class Kalkulator(QWidget):
         #przypisanie utworzonego układu do okna
         self.setLayout(ukladT)
 
+        koniecBtn.clicked.connect(self.koniec)
+
         self.setGeometry(20, 20, 300, 100)
         self.setWindowIcon(QIcon('kalkulator.png'))
         self.setWindowTitle("Prosty kalkulator")
         self.show()
-        
+
+    def koniec(self):
+        self.close()
+
+    def closeEvent(self, event):
+
+        odp = QMessageBox.question(
+            self, 'Komunikat',
+            "Czy na pewno koniec",
+            QMessageBox.Yes | QMessageBox.No)
+
+        if odp == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Escape:
+            self.close()    
+
 if __name__ == '__main__':
     import sys
 
